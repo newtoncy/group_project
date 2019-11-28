@@ -1,0 +1,10 @@
+{
+  "username": "root",
+  "password": "qq147258",
+  "driver": "pymysql",
+  "host": "127.0.0.1",
+  "port": "3306",
+  "dbname": "cjxt",
+  "charset": "UTF8MB4",
+  "注释": "这是描述如何连接mysql的配置文件"
+}

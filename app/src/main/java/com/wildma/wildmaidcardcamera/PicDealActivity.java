@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 public class PicDealActivity extends AppCompatActivity {
 
@@ -16,7 +17,7 @@ public class PicDealActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String path = getIntent().getStringExtra("path");
+        final String path = getIntent().getStringExtra("path");
         m_orgBitmap = BitmapFactory.decodeFile(path);
         setContentView(R.layout.activity_pic_deal);
         RecyclerView recyclerView = findViewById(R.id.pic_deal_rv);
@@ -28,7 +29,13 @@ public class PicDealActivity extends AppCompatActivity {
         bitmaps[3] = picDeal.bitmap4;
         bitmaps[4] = picDeal.bitmap5;
         bitmaps[5] = picDeal.bitmap6;
-        recyclerView.setAdapter(new RVAdapter(bitmaps));
+        RVAdapter rvAdapter = new RVAdapter(bitmaps, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TagActivity.toActivity(PicDealActivity.this,path);
+            }
+        });
+        recyclerView.setAdapter(rvAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
 
     }

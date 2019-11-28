@@ -1,5 +1,7 @@
 package com.wildma.wildmaidcardcamera;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,6 +17,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
         imageView.setBackgroundColor(0xFF000000);
         imageView.setAdjustViewBounds(true);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setOnClickListener(onClickListener);
         return new ViewHolder(imageView);
     }
 
@@ -26,9 +29,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
     }
 
     private Bitmap[] m_bitmapList = null;
-
-    public RVAdapter(Bitmap[] bitmapList){
+    private View.OnClickListener onClickListener = null;
+    RVAdapter(Bitmap[] bitmapList, View.OnClickListener onClickListener){
         m_bitmapList = bitmapList;
+        this.onClickListener = onClickListener;
     }
 
     @Override
