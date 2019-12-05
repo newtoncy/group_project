@@ -15,12 +15,12 @@ from db.connect import Session
 import base64
 
 
-@app.route("/upload")
+@app.route("/upload", methods=['POST'])
 def upload():
     arg = json.loads(request.data)
     session = Session()
     data = Data(userUID=arg["userID"], tag=arg["tag"], comment=arg["comment"])
-    # 随机生成一个名字
+    # 随机生成一个文件名
     while True:
         fName = random.randint(0, 100000000)
         fName = hex(fName)[2:]
@@ -28,5 +28,8 @@ def upload():
         if not os.path.exists(path):
             break
     with open(path, 'wb') as file:
-        base64.decode(arg["imgBase64"], file)
-
+        foo = base64.b64decode(arg["imgBase64"])
+        file.write(foo)
+    session.add(data)
+    session.commit()
+    return "ok"

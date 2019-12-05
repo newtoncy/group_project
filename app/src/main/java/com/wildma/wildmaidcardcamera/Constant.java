@@ -7,7 +7,7 @@ import okhttp3.MediaType;
 
 public class Constant {
     static final String protocol = "http";
-    static final String host = "10.1.1.111";
+    static final String host = "172.20.10.4";
     static final int port = 5000;
     static final String uploadPath = "/upload";
     static URL getUploadURL(){

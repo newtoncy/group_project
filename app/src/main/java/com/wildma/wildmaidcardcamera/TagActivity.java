@@ -41,6 +41,7 @@ public class TagActivity extends AppCompatActivity {
         jsonObject.put("comment", "__批注__");
         FileInputStream fileInputStream = new FileInputStream(imgPath);
         byte[] imgByte = new byte[fileInputStream.available()];
+        int foo = fileInputStream.read(imgByte);
         String imgBase64 = Base64.encodeToString(imgByte, Base64.DEFAULT);
         jsonObject.put("imgBase64", imgBase64);
         OkHttpClient client = new OkHttpClient();
