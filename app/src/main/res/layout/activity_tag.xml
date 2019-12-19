@@ -6,24 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".TagActivity">
 
-    <TextView
+    <LinearLayout
         android:id="@+id/fooText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="59dp"
-        android:gravity="center"
-        android:text="假装这是标注页面"
-        android:textSize="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/fooText"
-        android:text="提交"
-        android:onClick="submit"
-         />
+        <ImageView
+            android:id="@+id/img"
+            android:scaleType="centerInside"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+        <EditText
+            android:id="@+id/summary"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="15dp"
+            android:padding="15dp"
+            android:gravity="left|top"
+            android:hint="诊断结果"
+            android:background="@drawable/bg_edit"
+            />
+        <EditText
+            android:id="@+id/detail"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="15dp"
+            android:padding="15dp"
+            android:gravity="left|top"
+            android:hint="详情"
+            android:background="@drawable/bg_edit"
+            />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/fooText"
+            android:text="提交"
+            android:onClick="submit"
+            />
+
+    </LinearLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>

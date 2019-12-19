@@ -24,12 +24,14 @@ def upload():
     while True:
         fName = random.randint(0, 100000000)
         fName = hex(fName)[2:]
-        path = "upload_img/" + fName
+        fName += '.jpg'
+        path = "static/" + fName
         if not os.path.exists(path):
             break
     with open(path, 'wb') as file:
         foo = base64.b64decode(arg["imgBase64"])
         file.write(foo)
+    data.imgPath = path
     session.add(data)
     session.commit()
     return "ok"

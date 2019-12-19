@@ -2,10 +2,13 @@ package com.wildma.wildmaidcardcamera;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.util.Base64;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.wildma.idcardcamera.camera.CameraActivity;
 
@@ -31,14 +34,18 @@ public class TagActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag);
         imgPath = getIntent().getStringExtra("imgPath");
+        ImageView  imageView = findViewById(R.id.img);
+        imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath));
     }
 
 
     public void submit(View view) throws JSONException, IOException {
         JSONObject jsonObject = new JSONObject();
+        EditText summary = findViewById(R.id.summary);
+        EditText detail = findViewById(R.id.detail);
         jsonObject.put("userID", 1);
-        jsonObject.put("tag", "__诊断结果__");
-        jsonObject.put("comment", "__批注__");
+        jsonObject.put("tag", summary.getText());
+        jsonObject.put("comment", detail.getText());
         FileInputStream fileInputStream = new FileInputStream(imgPath);
         byte[] imgByte = new byte[fileInputStream.available()];
         int foo = fileInputStream.read(imgByte);
