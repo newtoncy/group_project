@@ -9,6 +9,7 @@ import android.view.View;
 import android.util.Base64;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.wildma.idcardcamera.camera.CameraActivity;
 
@@ -58,12 +59,16 @@ public class TagActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Toast.makeText(TagActivity.this, "网络错误："+e.toString(), Toast.LENGTH_LONG).show();
 
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-
+                if(response.code()==200)
+                    Toast.makeText(TagActivity.this, "成功！", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(TagActivity.this, "错误："+response.code(), Toast.LENGTH_LONG).show();
             }
         });
 
