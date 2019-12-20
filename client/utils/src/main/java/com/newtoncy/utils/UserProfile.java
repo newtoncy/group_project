@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class UserProfile {
-    String userName;
-    String password;
-    String uid;
+    public String userName;
+    public String password;
+    public String uid;
 
     public UserProfile(String uid, String userName, String password) {
         this.uid = uid;

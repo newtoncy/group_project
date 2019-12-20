@@ -16,7 +16,7 @@ from db.connect import Session
 def sign_in():
     arg = json.loads(request.data)
     uid = arg['uid']
-    pwd = arg['pwd']
+    pwd = arg['password']
     session = Session()
     user: User = session.query(User).get(uid)
     session.commit()

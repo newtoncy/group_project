@@ -1,6 +1,7 @@
 package com.newtoncy.group_project;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -11,7 +12,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.renkai.login_test.Login_Activity;
+import com.example.renkai.login_test.UserInfo2Activity;
 import com.newtoncy.idcardcamera.camera.CameraActivity;
+import com.newtoncy.utils.Login;
+import com.newtoncy.utils.RequestFail;
+import com.newtoncy.utils.UserProfile;
+
+import okhttp3.Response;
 
 /**
  * Author   wildma
@@ -20,13 +27,45 @@ import com.newtoncy.idcardcamera.camera.CameraActivity;
  * Desc     ${身份证相机使用例子}
  */
 public class MainActivity extends AppCompatActivity {
-    private ImageView imageView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        imageView = (ImageView) findViewById(R.id.iv_image);
+        findViewById(R.id.text_cover).setVisibility(View.VISIBLE);
+        findViewById(R.id.img_cover).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!Login.isLogin()){
+            SharedPreferences sharedPreferences = getSharedPreferences("pwd",MODE_PRIVATE);
+            String password = sharedPreferences.getString("password",null);
+            String uid = sharedPreferences.getString("uid",null);
+            if(uid != null && password != null){
+                Login login  = new Login(new RequestFail() {
+                    @Override
+                    public void onFail(Response response, int reason, Object e) {
+                        Login_Activity.toActivity(MainActivity.this);
+                    }
+                });
+                login.login(uid, password, new Login.Callback() {
+                    @Override
+                    public void success(UserProfile userProfile) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                findViewById(R.id.text_cover).setVisibility(View.GONE);
+                                findViewById(R.id.img_cover).setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                });
+            }
+
+        }
     }
 
     /**
@@ -51,17 +90,12 @@ public class MainActivity extends AppCompatActivity {
             //获取图片路径，显示图片
             path = CameraActivity.getImagePath(data);
             if (!TextUtils.isEmpty(path)) {
-                m_bitmap = BitmapFactory.decodeFile(path);
-                imageView.setImageBitmap(m_bitmap);
-                Button tp = findViewById(R.id.bt_take_photo);
-                Button show = findViewById(R.id.bt_picture_deal);
-                tp.setText("重新拍摄");
-                show.setVisibility(View.VISIBLE);
+               TagActivity.toActivity(this,path);
             }
         }
     }
 
-    public void login(View view) {
-        Login_Activity.toActivity(this);
+    public void userInfo(View view) {
+        UserInfo2Activity.toActivity(this);
     }
 }

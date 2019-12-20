@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.newtoncy.utils.Login;
+import com.newtoncy.utils.ServerURL;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +44,7 @@ public class TagActivity extends AppCompatActivity {
         JSONObject jsonObject = new JSONObject();
         EditText summary = findViewById(R.id.summary);
         EditText detail = findViewById(R.id.detail);
-        jsonObject.put("userID", 1);
+        jsonObject.put("userID", Login.getUserProfile().uid);
         jsonObject.put("tag", summary.getText());
         jsonObject.put("comment", detail.getText());
         FileInputStream fileInputStream = new FileInputStream(imgPath);
@@ -50,8 +53,8 @@ public class TagActivity extends AppCompatActivity {
         String imgBase64 = Base64.encodeToString(imgByte, Base64.DEFAULT);
         jsonObject.put("imgBase64", imgBase64);
         OkHttpClient client = new OkHttpClient();
-        RequestBody requestBody = RequestBody.create(Constant.JSON, jsonObject.toString());
-        Request request = new Request.Builder().url(Constant.getUploadURL()).post(requestBody).build();
+        RequestBody requestBody = RequestBody.create(ServerURL.JSON, jsonObject.toString());
+        Request request = new Request.Builder().url(ServerURL.getURL(ServerURL.uploadPath)).post(requestBody).build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -61,11 +64,25 @@ public class TagActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if(response.code()==200)
-                    Toast.makeText(TagActivity.this, "成功！", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(TagActivity.this, "错误："+response.code(), Toast.LENGTH_LONG).show();
+            public void onResponse(@NotNull Call call, @NotNull final Response response) throws IOException {
+                if (response.code() == 200) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(TagActivity.this, "成功！", Toast.LENGTH_SHORT).show();
+                            TagActivity.this.finish();
+                        }
+                    });
+
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(TagActivity.this, "错误：" + response.code(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                }
             }
         });
 

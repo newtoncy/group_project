@@ -1,4 +1,4 @@
-package com.newtoncy.group_project;
+package com.newtoncy.group_project.adapter;
 
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;

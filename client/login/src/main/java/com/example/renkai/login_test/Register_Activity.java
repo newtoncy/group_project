@@ -29,7 +29,7 @@ import okhttp3.Response;
 public class Register_Activity extends Activity implements View.OnClickListener {
 
 
-    private EditText edit_register, edit_setpassword, edit_resetpassword;
+    private EditText edit_register, edit_setpassword, edit_resetpassword,edit_username;
     private Button btn_yes, btn_cancel;
     private DBHelper dbHelper;
 
@@ -110,6 +110,7 @@ public class Register_Activity extends Activity implements View.OnClickListener 
         btn_yes.setOnClickListener(this);
         btn_cancel = (Button) findViewById(R.id.btn_cancle);
         btn_cancel.setOnClickListener(this);
+        edit_username = findViewById(R.id.edit_username);
     }
 
     @Override
@@ -119,7 +120,7 @@ public class Register_Activity extends Activity implements View.OnClickListener 
             if (edit_setpassword.getText().toString().trim().
                     equals(edit_resetpassword.getText().toString())) {
 
-                regist(edit_register.getText().toString(), edit_setpassword.getText().toString(), "__用户名字__");
+                regist(edit_register.getText().toString(), edit_setpassword.getText().toString(), edit_username.getText().toString());
 
             } else {
                 Toast.makeText(this, "两次输入密码不同，请重新输入！",

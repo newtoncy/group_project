@@ -1,5 +1,7 @@
 package com.newtoncy.utils;
 
+import android.content.SharedPreferences;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +41,7 @@ public class Login {
     public void login(String uid, String password){
         login(uid,password,callback);
     }
-    public  void login(String uid, String password, final Callback callback) {
+    public  void login(String uid, final String password, final Callback callback) {
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("uid", uid);
@@ -47,7 +49,7 @@ public class Login {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JSONRequest.call(serverURL.getURL(serverURL.signIn),jsonObject, new JSONRequest.Callback() {
+        JSONRequest.call(ServerURL.getURL(ServerURL.signIn),jsonObject, new JSONRequest.Callback() {
             @Override
             public void success(JSONObject jsonObject) {
                 loginFlag = true;
@@ -55,11 +57,11 @@ public class Login {
                     userProfile = new UserProfile(
                             jsonObject.getString("uid"),
                             jsonObject.getString("userName"),
-                            jsonObject.getString("password"));
+                            password);
                     callback.success(userProfile);
 
                 } catch (JSONException e) {
-                    //todo:异常处理
+                    requestFail.onFail(null,ERR_CODE.FORMAT_ERR,e);
                     e.printStackTrace();
                 }
             }
@@ -83,7 +85,7 @@ public class Login {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JSONRequest.call(serverURL.getURL(serverURL.signUp),jsonObject,new JSONRequest.Callback(){
+        JSONRequest.call(ServerURL.getURL(ServerURL.signUp),jsonObject,new JSONRequest.Callback(){
 
             @Override
             public void success(JSONObject jsonObject) {
@@ -97,5 +99,8 @@ public class Login {
                 requestFail.onFail(response,reason,e);
             }
         });
+    }
+    public static void logout(){
+        loginFlag=false;
     }
 }

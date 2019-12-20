@@ -22,7 +22,7 @@ public class JSONRequest {
     public static void call(URL url, final JSONObject jsonObject, final Callback callback){
 
         OkHttpClient client = new OkHttpClient();
-        RequestBody requestBody = RequestBody.create(serverURL.JSON, jsonObject.toString());
+        RequestBody requestBody = RequestBody.create(ServerURL.JSON, jsonObject.toString());
         Request request = new Request.Builder().url(url).post(requestBody).build();
         client.newCall(request).enqueue(
                 new okhttp3.Callback() {
