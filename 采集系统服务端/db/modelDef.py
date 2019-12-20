@@ -14,7 +14,7 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'users'  # __tablename__是必须的
-    uid = Column(Integer, primary_key=True)  # 主键是必须的
+    uid = Column(String(20), primary_key=True)  # 主键是必须的
     userName = Column(String(20))
     password = Column(String(20))
     data = relationship("Data", back_populates='user')
@@ -24,7 +24,7 @@ class Data(Base):
     __tablename__ = 'data'
     dataID = Column(Integer, primary_key=True)
     imgPath = Column(String(20))
-    userUID = Column(Integer, ForeignKey('users.uid'))
+    userUID = Column(String(20), ForeignKey('users.uid'))
     tag = Column(String(20))
     comment = Column(String(20))
     user = relationship("User", back_populates='data')
