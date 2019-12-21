@@ -10,20 +10,14 @@ import android.view.View;
 
 import com.example.renkai.login_test.Login_Activity;
 import com.example.renkai.login_test.UserInfo2Activity;
-import com.newtoncy.group_project.adapter.EndlessScrollListenerImp;
+import com.newtoncy.group_project.adapter.EndlessScrollDataLoader;
 import com.newtoncy.group_project.adapter.ImgListAdapter;
 import com.newtoncy.group_project.adapter.EndlessScrollListener;
 import com.newtoncy.group_project.javaclass.ImgInfo;
 import com.newtoncy.idcardcamera.camera.CameraActivity;
-import com.newtoncy.utils.JSONRequest;
 import com.newtoncy.utils.Login;
 import com.newtoncy.utils.RequestFail;
-import com.newtoncy.utils.RequestFailImp;
-import com.newtoncy.utils.ServerURL;
 import com.newtoncy.utils.UserProfile;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +35,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private EndlessScrollListener endlessScrollListener;
+    private EndlessScrollDataLoader endlessScrollDataLoader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(adapter);
-        endlessScrollListener = new EndlessScrollListenerImp(this,imgInfoList,adapter);
+        endlessScrollDataLoader = new EndlessScrollDataLoader(this,imgInfoList,adapter);
+        endlessScrollListener = new EndlessScrollListener(endlessScrollDataLoader);
         recyclerView.addOnScrollListener(endlessScrollListener);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -89,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 findViewById(R.id.text_cover).setVisibility(View.GONE);
                                 findViewById(R.id.img_cover).setVisibility(View.GONE);
-                                endlessScrollListener.doLoadMore();
+                                endlessScrollDataLoader.loadMore();
                             }
                         });
                     }

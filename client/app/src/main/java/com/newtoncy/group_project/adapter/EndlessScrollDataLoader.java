@@ -1,6 +1,7 @@
 package com.newtoncy.group_project.adapter;
 
 import android.app.Activity;
+import android.os.Handler;
 
 import com.newtoncy.group_project.javaclass.ImgInfo;
 import com.newtoncy.utils.ERR_CODE;
@@ -20,13 +21,15 @@ import okhttp3.Response;
 
 //实现数据加载
 //通知适配器刷新
-public class EndlessScrollListenerImp extends EndlessScrollListener {
+public class EndlessScrollDataLoader implements EndlessScrollListener.DataLoader {
     private List<ImgInfo> imgInfoList;
     private Activity activity;
     private ImgListAdapter adapter;
     private RequestFail requestFail;
+    private boolean loadLock = false;
+    private final Object mutex = new Object();
 
-    public EndlessScrollListenerImp(Activity activity, List<ImgInfo> imgInfoList, ImgListAdapter adapter) {
+    public EndlessScrollDataLoader(Activity activity, List<ImgInfo> imgInfoList, ImgListAdapter adapter) {
         this.activity = activity;
         this.adapter = adapter;
         this.imgInfoList = imgInfoList;
@@ -34,10 +37,12 @@ public class EndlessScrollListenerImp extends EndlessScrollListener {
     }
 
     @Override
-    protected boolean loadMore() {
+    public void loadMore() {
         if(!Login.isLogin())
-            return true;
+            return;
         //加载更多
+        if(!setLoadLock()) //同时只允许一个加载，申请锁失败，退出
+            return;
         JSONObject jsonObject = new JSONObject();
         try {
             if(imgInfoList.size()>0)
@@ -57,7 +62,7 @@ public class EndlessScrollListenerImp extends EndlessScrollListener {
                             public void run() {
                                 int index = imgInfoList.size();
                                 int count = parseDataFromServer(jsonObject, imgInfoList);
-                                notifyLoadingCompletion();
+                                unsetLoadLock();
                                 adapter.notifyItemRangeInserted(index,count);
                             }
                         });
@@ -66,11 +71,27 @@ public class EndlessScrollListenerImp extends EndlessScrollListener {
 
                     @Override
                     public void fail(Response response, int reason, Object e) {
-                        notifyLoadingCompletion();
+                        unsetLoadLock();
                         requestFail.onFail(response, reason, e);
                     }
                 });
-        return false;
+    }
+
+    @Override
+    public void flush() {
+        if(loadLock) {
+            new Handler().post(new Runnable() {
+
+                @Override
+                public void run() {
+                    flush();
+                }
+            });
+            return;
+        }
+        imgInfoList.clear();
+        adapter.notifyDataSetChanged();
+        loadMore();
     }
 
     private int parseDataFromServer(JSONObject jsonObject, List<ImgInfo> imgInfoList) {
@@ -90,6 +111,36 @@ public class EndlessScrollListenerImp extends EndlessScrollListener {
             requestFail.onFail(null, ERR_CODE.FORMAT_ERR,e);
         }
         return 0;
+    }
+
+    /**
+     * 同时只允许一个加载操作
+     * 写了一个互斥锁
+     * 不过我又思考了一下觉得这个没有屌用
+     * 因为按这个逻辑，虽然 解锁 会发生在其他线程
+     * 但是 加锁 总是发生在主线程
+     * @return 表示加锁是否成功
+     */
+    private boolean setLoadLock() {
+        synchronized (mutex) {
+            boolean foo = loadLock;
+            loadLock = true;
+            return !foo;
+        }
+
+    }
+
+    /**
+     * 解锁
+     * @return 表示解锁是否成功，如果锁本来就没有加，那么会返回假
+     */
+
+    private boolean unsetLoadLock() {
+        synchronized (mutex) {
+            boolean foo = loadLock;
+            loadLock = false;
+            return foo;
+        }
     }
 
 }
