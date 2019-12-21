@@ -17,7 +17,7 @@ class User(Base):
     uid = Column(String(20), primary_key=True)  # 主键是必须的
     userName = Column(String(20))
     password = Column(String(20))
-    data = relationship("Data", back_populates='user')
+    data = relationship("Data", back_populates='user', lazy="dynamic")
 
 
 class Data(Base):

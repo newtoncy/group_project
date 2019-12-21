@@ -15,7 +15,7 @@ import okhttp3.Response;
 
 public class JSONRequest {
 
-    interface Callback {
+    public interface Callback {
         void success(JSONObject jsonObject);
         void fail(Response response, int reason, Object e);
     }

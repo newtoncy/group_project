@@ -11,6 +11,7 @@ public class ServerURL {
     public static final String uploadPath = "/upload";
     public static final String signIn = "/sign_in";
     public static final String signUp = "/sign_up";
+    public static final String imgList = "/img_list";
     public static URL getURL(String path){
         URL url = null;
         try {

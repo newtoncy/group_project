@@ -1,7 +1,7 @@
 package com.newtoncy.group_project.adapter;
 
 import android.graphics.Bitmap;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,7 +28,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
 
     private Bitmap[] m_bitmapList = null;
     private View.OnClickListener onClickListener = null;
-    RVAdapter(Bitmap[] bitmapList, View.OnClickListener onClickListener){
+    public RVAdapter(Bitmap[] bitmapList, View.OnClickListener onClickListener){
         m_bitmapList = bitmapList;
         this.onClickListener = onClickListener;
     }

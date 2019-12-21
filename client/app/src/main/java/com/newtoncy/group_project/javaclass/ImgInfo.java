@@ -1,8 +1,8 @@
 package com.newtoncy.group_project.javaclass;
 
 public class ImgInfo {
-    int id = 0;
-    String imgPath;
-    String tag;
-    String comment;
+    public int id = 0;
+    public String imgPath;
+    public String tag;
+    public String comment;
 }

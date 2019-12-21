@@ -1,26 +1,35 @@
 package com.newtoncy.group_project.adapter;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.newtoncy.group_project.R;
 import com.newtoncy.group_project.javaclass.ImgInfo;
+import com.newtoncy.utils.ServerURL;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ImgListAdapter extends RecyclerView.Adapter {
-    List<ImgInfo> imgInfoList = new ArrayList<>() ;
-    interface Callback{
+    List<ImgInfo> imgInfoList = null ;
+    public interface Callback{
         void onClick(View view,ImgInfo imgInfo);
     }
     private Callback callback;
-    ImgListAdapter(Callback callback){this.callback = callback;}
+    private Context context;
+    public ImgListAdapter(Context context, List<ImgInfo> imgInfoList, Callback callback){
+        this.imgInfoList = imgInfoList;
+        this.context = context;
+        this.callback = callback;
+    }
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -32,7 +41,7 @@ public class ImgListAdapter extends RecyclerView.Adapter {
                 callback.onClick(v,imgInfoList.get(holder.getAdapterPosition()));
             }
         });
-        return holder
+        return holder;
     }
 
     class Holder extends RecyclerView.ViewHolder{
@@ -49,7 +58,11 @@ public class ImgListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
+        Holder holder = (Holder) viewHolder;
+        ImgInfo imgInfo = imgInfoList.get(i);
+        holder.textTag.setText(imgInfo.tag);
+        holder.textcomment.setText(imgInfo.comment);
+        Glide.with(context).load(ServerURL.getURL(imgInfo.imgPath)).into(holder.imageView);
     }
 
     @Override
