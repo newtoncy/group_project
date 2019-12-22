@@ -243,8 +243,8 @@ public class CameraActivity extends Activity implements View.OnClickListener {
 
         /*旋转和镜像*/
         Matrix m = new Matrix();
-        m.postRotate(270);
-        m.postScale(-1,1);
+        m.postRotate(90);
+        m.postScale(1,1);
         bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,true);
         /*自动裁剪*/
         mCropBitmap = Bitmap.createBitmap(bitmap,

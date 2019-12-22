@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.newtoncy.group_project.R;
 import com.newtoncy.group_project.javaclass.ImgInfo;
 import com.newtoncy.utils.ServerURL;
@@ -62,7 +64,9 @@ public class ImgListAdapter extends RecyclerView.Adapter {
         ImgInfo imgInfo = imgInfoList.get(i);
         holder.textTag.setText(imgInfo.tag);
         holder.textcomment.setText(imgInfo.comment);
-        Glide.with(context).load(ServerURL.getURL(imgInfo.imgPath)).into(holder.imageView);
+        RoundedCorners roundedCorners= new RoundedCorners(30);
+        RequestOptions options=RequestOptions.bitmapTransform(roundedCorners).centerCrop();
+        Glide.with(context).load(ServerURL.getURL(imgInfo.imgPath)).apply(options).into(holder.imageView);
     }
 
     @Override

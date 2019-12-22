@@ -3,16 +3,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="0dp"
+    android:background="@drawable/bg_edit">
 
     <ImageView
         android:id="@+id/img_list_img"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
+        android:contentDescription="TODO"
+        android:scaleType="fitCenter"
         android:src="@drawable/timg2" />
-
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/btn"/>
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -25,15 +33,18 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="病症"
-            android:textSize="18dp" />
-
+            android:textSize="20dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/btn"/>
         <TextView
             android:id="@+id/text_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
             android:text="详情"
-            android:textSize="10dp" />
+            android:textSize="16dp" />
 
 
     </LinearLayout>

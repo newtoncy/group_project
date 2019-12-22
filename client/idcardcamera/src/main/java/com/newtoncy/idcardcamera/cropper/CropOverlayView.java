@@ -286,6 +286,8 @@ public class CropOverlayView extends View {
         if (newY > maxY) newY = maxY;
 
         topLeft.set(newX, newY);
+        topRight.y = newY;
+        bottomLeft.x = newX;
     }
 
     private void adjustTopRight(int deltaX, int deltaY) {
@@ -298,6 +300,8 @@ public class CropOverlayView extends View {
         if (newY > maxY) newY = maxY;
 
         topRight.set(newX, newY);
+        topLeft.y = newY;
+        bottomRight.x = newX;
     }
 
     private void adjustBottomLeft(int deltaX, int deltaY) {
@@ -310,6 +314,8 @@ public class CropOverlayView extends View {
         if (newY < minY) newY = minY;
 
         bottomLeft.set(newX, newY);
+        bottomRight.y = newY;
+        topLeft.x = newX;
     }
 
     private void adjustBottomRight(int deltaX, int deltaY) {
@@ -322,6 +328,8 @@ public class CropOverlayView extends View {
         if (newY < minY) newY = minY;
 
         bottomRight.set(newX, newY);
+        bottomLeft.y = newY;
+        topRight.x = newX;
     }
 
     public void crop(CropListener cropListener, boolean needStretch) {
