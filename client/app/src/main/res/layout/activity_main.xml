@@ -19,29 +19,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="horizontal">
+            android:layout_margin="0dp"
+            android:orientation="horizontal"
+            android:background="@color/brightPink">
 
             <Button
                 android:id="@+id/bt_take_photo"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:layout_margin="0dp"
                 android:layout_weight="1"
+                android:layout_marginStart="4dp"
                 android:onClick="frontIdCard"
                 android:text="拍摄"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:background="@drawable/layout_border"/>
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:layout_margin="0dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:onClick="userInfo"
                 android:text="用户信息"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:background="@drawable/layout_border"/>
 
         </LinearLayout>
     </LinearLayout>

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import okhttp3.Response;
 
 public class RequestFailImp implements RequestFail {
@@ -11,6 +13,13 @@ public class RequestFailImp implements RequestFail {
     public RequestFailImp(Activity activity){
         this.activity = activity;
     }
+    private Callback callback;
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+
     @Override
     public void onFail(final Response response, final int reason, final Object e) {
         activity.runOnUiThread(new Runnable() {
@@ -38,8 +47,15 @@ public class RequestFailImp implements RequestFail {
                         ((Exception)e).printStackTrace();
                         break;
                 }
+                if(callback!=null)
+                    callback.fail();
             }
         });
 
+    }
+
+    @Override
+    public void onFail(JSONObject response, int reason, Object e) {
+        onFail((Response) null,reason,e);
     }
 }

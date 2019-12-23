@@ -6,7 +6,7 @@
 # @Brief   : 定义数据库模式
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Text
 from sqlalchemy.orm import relationship
 
 Base = declarative_base()
@@ -26,5 +26,5 @@ class Data(Base):
     imgPath = Column(String(20))
     userUID = Column(String(20), ForeignKey('users.uid'))
     tag = Column(String(20))
-    comment = Column(String(20))
+    comment = Column(Text(10000))
     user = relationship("User", back_populates='data')

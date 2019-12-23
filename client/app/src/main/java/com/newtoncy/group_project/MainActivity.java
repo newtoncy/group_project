@@ -17,6 +17,7 @@ import com.newtoncy.group_project.javaclass.ImgInfo;
 import com.newtoncy.idcardcamera.camera.CameraActivity;
 import com.newtoncy.utils.Login;
 import com.newtoncy.utils.RequestFail;
+import com.newtoncy.utils.RequestFailImp;
 import com.newtoncy.utils.UserProfile;
 
 import java.util.ArrayList;
@@ -27,28 +28,35 @@ import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Response;
 
 /**
- * Author   wildma
- * Github   https://github.com/wildma
+ * Author   newtoncy(王超逸)
  * Date     2018/6/24
- * Desc     ${身份证相机使用例子}
+ * Desc     ${主界面}
  */
 public class MainActivity extends AppCompatActivity {
 
+    private final int REQUEST_CREATE = 0;
+    private final int REQUEST_UPDATE = 1;
+    private int updatePosition = -1;
+    private List<ImgInfo> imgInfoList;
     private EndlessScrollListener endlessScrollListener;
     private EndlessScrollDataLoader endlessScrollDataLoader;
+    private ImgListAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.text_cover).setVisibility(View.VISIBLE);
-        findViewById(R.id.img_cover).setVisibility(View.VISIBLE);
+        if(!Login.isLogin()){
+            findViewById(R.id.text_cover).setVisibility(View.VISIBLE);
+            findViewById(R.id.img_cover).setVisibility(View.VISIBLE);
+        }
         final RecyclerView  recyclerView = findViewById(R.id.rv_img_list);
         //设置recycleView
-        final List<ImgInfo> imgInfoList = new ArrayList<>();
-        final ImgListAdapter adapter = new ImgListAdapter(this, imgInfoList, new ImgListAdapter.Callback() {
+        imgInfoList = new ArrayList<>();
+        adapter = new ImgListAdapter(this, imgInfoList, new ImgListAdapter.Callback() {
             @Override
-            public void onClick(View view, ImgInfo imgInfo) {
-                itemOnClick(view,imgInfo);
+            public void onClick(View view, ImgInfo imgInfo,int position) {
+                updatePosition = position;
+                TagActivity.toActivity(MainActivity.this,imgInfo,REQUEST_UPDATE);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -58,10 +66,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-
-    void itemOnClick(View view, ImgInfo imgInfo){
-
-    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             String password = sharedPreferences.getString("password",null);
             String uid = sharedPreferences.getString("uid",null);
             if(uid != null && password != null){
-                Login login  = new Login(new RequestFail() {
+                Login login  = new Login(new RequestFailImp(this) {
                     @Override
                     public void onFail(Response response, int reason, Object e) {
                         Login_Activity.toActivity(MainActivity.this);
@@ -118,8 +122,20 @@ public class MainActivity extends AppCompatActivity {
             //获取图片路径，显示图片
             path = CameraActivity.getImagePath(data);
             if (!TextUtils.isEmpty(path)) {
-                TagActivity.toActivity(this, path);
+                TagActivity.toActivity(this, path, REQUEST_CREATE);
             }
+        }
+        if(requestCode == REQUEST_CREATE){
+            if(resultCode == TagActivity.CODE_FAIL)
+                return;
+            imgInfoList.add(0, TagActivity.getImgInfo(data));
+            adapter.notifyItemInserted(0);
+        }
+        if(requestCode == REQUEST_UPDATE){
+            if(resultCode == TagActivity.CODE_FAIL)
+                return;
+            imgInfoList.set(updatePosition,TagActivity.getImgInfo(data));
+            adapter.notifyItemChanged(updatePosition);
         }
     }
 

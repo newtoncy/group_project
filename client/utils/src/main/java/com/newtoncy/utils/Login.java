@@ -61,7 +61,7 @@ public class Login {
                     callback.success(userProfile);
 
                 } catch (JSONException e) {
-                    requestFail.onFail(null,ERR_CODE.FORMAT_ERR,e);
+                    requestFail.onFail(jsonObject,ERR_CODE.FORMAT_ERR,e);
                     e.printStackTrace();
                 }
             }

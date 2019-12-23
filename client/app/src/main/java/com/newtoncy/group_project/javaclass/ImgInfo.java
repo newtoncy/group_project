@@ -1,6 +1,8 @@
 package com.newtoncy.group_project.javaclass;
 
-public class ImgInfo {
+import java.io.Serializable;
+
+public class ImgInfo implements Serializable {
     public int id = 0;
     public String imgPath;
     public String tag;

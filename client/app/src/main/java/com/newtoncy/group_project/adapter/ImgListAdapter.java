@@ -23,7 +23,7 @@ import java.util.List;
 public class ImgListAdapter extends RecyclerView.Adapter {
     List<ImgInfo> imgInfoList = null ;
     public interface Callback{
-        void onClick(View view,ImgInfo imgInfo);
+        void onClick(View view,ImgInfo imgInfo,int position);
     }
     private Callback callback;
     private Context context;
@@ -40,7 +40,7 @@ public class ImgListAdapter extends RecyclerView.Adapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.onClick(v,imgInfoList.get(holder.getAdapterPosition()));
+                callback.onClick(v,imgInfoList.get(holder.getAdapterPosition()),holder.getAdapterPosition());
             }
         });
         return holder;

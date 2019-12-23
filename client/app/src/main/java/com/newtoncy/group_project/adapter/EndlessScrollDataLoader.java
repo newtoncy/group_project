@@ -108,7 +108,7 @@ public class EndlessScrollDataLoader implements EndlessScrollListener.DataLoader
             }
             return jsonArray.length();
         } catch (JSONException e) {
-            requestFail.onFail(null, ERR_CODE.FORMAT_ERR,e);
+            requestFail.onFail(jsonObject, ERR_CODE.FORMAT_ERR,e);
         }
         return 0;
     }

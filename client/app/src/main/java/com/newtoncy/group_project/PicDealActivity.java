@@ -33,7 +33,7 @@ public class PicDealActivity extends AppCompatActivity {
         RVAdapter rvAdapter = new RVAdapter(bitmaps, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TagActivity.toActivity(PicDealActivity.this,path);
+                TagActivity.toActivity(PicDealActivity.this,path,0);
             }
         });
         recyclerView.setAdapter(rvAdapter);
